@@ -1,0 +1,273 @@
+﻿@using ToyStore.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> @ViewBag.Title </title>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.scrollUp.min.js"></script>
+    <script src="~/Scripts/price-range.js"></script>
+    <script src="~/Scripts/jquery.prettyPhoto.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    <link rel="icon" href="~/Assets/Images/shop/favicon.ico" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/prettyPhoto.css" rel="stylesheet" />
+    <link href="~/Content/price-range.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/Content/mainshop.css" rel="stylesheet" />
+    <link href="~/Content/responsive.css" rel="stylesheet" />
+    <link href="~/Content/owlcarousel/assets/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Content/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <script src="~/Content/owlcarousel/owl.carousel.js"></script>
+    <script src="~/Content/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/Content/Swiper/swiper-bundle.min.js"></script>
+    <link href="~/Content/Swiper/swiper-bundle.min.css" rel="stylesheet" />
+    <style>
+        .banner {
+            width: 90%;
+            height: 200px;
+        }
+
+        .img-detail {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="master-wrapper-page">
+        <div class="search-box store-search-box" id="search-box">
+            @using (Html.BeginForm("Search", "Store", FormMethod.Get, new { @class = "search-box form" }))
+            {
+                @Html.TextBox("searchString", null, new { placeholder = "Tìm kiếm sản phẩm", type = "text", @class = "search-box-text", @id = "small-searchterms" });
+            }
+        </div>
+        <!--header-->
+        <header id="header" class="header">
+            <div class="header-lower">
+                <div class="header-logo">
+                    <a href="/">
+                        <h1><img alt="The Men" src="data:image/png;base64,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"></h1>
+                    </a>
+                </div>
+                <div class="header-menu">
+                    <ul class="top-menu notmobile">
+                        <li class="topic-items-news">
+                            <a href="@Url.Action("Products", "Store")">
+                                Tất cả SP
+                            </a>
+                        </li>
+                        @Html.Action("DongSP", "Store")
+
+                        <li class="topic-items-news">
+                            <a href="" @Url.Action("Store", "DongsSanPham") ">
+                                Tin Tức
+                            </a>
+                        </li>
+                        <li class="menu-news-items" style="margin-bottom:0"><a href="#">Khuyến mại</a></li>
+                    </ul>
+                </div>
+                <div class="header-links-wrapper">
+                    <div class="search-icon" onclick="myFunction()"></div>
+                    <div class="header-links">
+                        @Html.Action("GiohangPartial", "GioHang")
+                    </div>
+                    <div class="login-icon">
+                        @if (Session["Taikhoan"] != null)
+                        {
+                            <a href="@Url.Action("Information", "User")">
+                                <img src="~/Assets/Images/shop/login.png" alt="login-icon"> @*@(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name: "Tài khoản")*@
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("DangNhap", "User")">
+                                <img src="~/Assets/Images/shop/login.png" alt="login-icon">
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </header><!--/header-->
+        <div class="bg-sg" id="bg-sg" onclick="closeBoxSearch()"></div>
+        <script>
+            var element1 = document.getElementById("search-box");
+            var element2 = document.getElementById("bg-sg");
+
+            function myFunction() {
+                element1.style.display = "block";
+                element2.style.display = "block";
+            }
+            function closeBoxSearch() {
+                element1.style.display = "none";
+                element2.style.display = "none";
+            }
+        </script>
+        <section class="center-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="features_items">
+                            <!--features_items-->
+                            <div class="item-box-list">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="footer_newletter">
+                <div class="heading_newletter">Đăng ký nhận tin từ The Men</div>
+                <p>Thông tin sản phẩm mới nhất và chương trình khuyến mãi</p>
+                <div class="newsletter">
+                    <div class="title">
+                        <strong>Bản tin</strong>
+                    </div>
+                    <div class="newsletter-subscribe" id="newsletter-subscribe-block">
+                        <div class="newsletter-email">
+                            <input id="newsletter-email" class="newsletter-subscribe-text" placeholder="Email của bạn" aria-label="Đăng ký nhận bản tin của chúng tôi" type="email" name="NewsletterEmail">
+                            <button type="button" id="newsletter-subscribe-button" class="button-1 newsletter-subscribe-button">Đăng ký</button>
+                        </div>
+                        <div class="newsletter-validation">
+                            <span id="subscribe-loading-progress" style="display:none" class="please-wait">Chờ đợi...</span>
+                            <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="newsletter-result" id="newsletter-result-block"></div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="footer">
+                <div class="footer-upper">
+                    <div class="footer-block follow-us">
+                        <div class="header-logo">
+                            <a href="/"> <img alt="The Men" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUsAAACYCAMAAABatDuZAAAAflBMVEX///8AAAC4uLi+vr7z8/MRERG7u7vl5eX7+/v4+Pjo6Og5OTktLS3e3t5jY2OLi4tERESurq4nJydaWloxMTHX19fFxcUJCQnR0dGZmZkbGxvLy8vu7u5QUFB7e3skJCRra2ulpaWSkpJ4eHicnJyDg4NKSko/Pz9wcHAXFxaVLHoAAAAGiUlEQVR4nO2daXuqOhSFiYCKSnFCqULF6VT//x+87CRAUBSs3idNXe+HFpm6XSch2UM4lgUAAAAAAAAAAAAAAAAAAAAAAAAArRxm2yiMwjAc6LbEfGZMMo91m2I83VxLNvZ022I6i0JLZuu2xXScf4WW/3TbYjwfZcNEJ38Ke/ddarnTbY3RdOyAsVV6PPSsQRSt16FugwymZweT0M82Jvs5tczzUbdF5mLzSeXiC4P5K/DioBzJGZvptsdcFrsZU0n6ui0yEs+3v06TeO+WSk5T3UaZimyCiuPzDZf8OdZKF1/rNsZwDqWUY7TL51B8yIluW0xnPyy01G2K+eQPzGWg2xLzmUgtv3QbYj7+x2jEtUx1W2I40SGbtC9S+Dwv4Js5mZbn7GGZiYkY0TOEWWt0rIi5O8SIniVg7PxlRfE6nZEreUYo+KeEgyljfCI08CyPGuaHbpMM5cDSrvTBo6w9OryX90JHt10msmMpT0sklnVahkLLZcRmRzjlj7NlbLjKBAx65D5yLT82mLT/jEPq8cCGnw3nA67lphLiwHyzLQH1ZZu0G2Ue+a5fRDj28gQfI1E77DHrZb987j5mPX3oCyHdD1k76H8hBNcKL8i78ilvjb6IYybyjOyEeU+jhcYQn0m2Id/OtVwl/Bevz4p5rB0huBb0RSyDLejDZy7msggWTcZ8E3OjFvRlTvxEHxylNitja+VNNdVqozHk0V8qJKL4hgJ55EqrBY1MhVyi4OWoaknjTWUQAg3kKR4x6zmVUlIIU3jm/1DY2o589FnxT4MyE0niCqFHvl4TzaEntROuTfHI5NqKuDACw60ZSfVE1YvtKvoFYrur1T6TqAw2lhXN8wmRFY/K2RFoQVRomYpokHdMkg7fko45Vqi0ZVcO3bmr2JchtmJU12acYahzyqrfHU+Z9ITgQ7YiHipaVkfsbebxiN0HXdaZBX8mbtbS/VkpJawxY51YNMz97etBCW95Uy9aSjGj4siJppx7Mfigk7eBx32HvENz3E95IOUBD7ncJ7p7DyDgj8uxpRQF78lldE6qF4nlkW3w+HT8m7aScjgPgjFjc34CZkWt6SiT8VJM3u9F2YbI7WJZRQvEYzLl215l4VlPPQEZnxaI6EVeblmKWUyObPF5g5G8CW9ebXX5Mr5pEbKUM0zW0WOgQYjA+ahM6IR8pa5alCXb6lmDdWZBXs+q6tU43XWlekiMTjO8/6mJbXMGgjfdw98rzgq79hMsrgVJNo1x3v7sRqN0nrHFtruafamAuT9nmVznE79aDM+TbX2j9OfLJ6xxddd2Os/xu6xBphgAAAAA4Lcy6JVUPELaQRNtjzYur3LySxr8Q/Xug9pJYSyPVib++SWGrQTcr6YFlbqA4WbKF9yul9PNRSHLIJiJCzbfdxdJdPbD8ubTeXqd+ensvzf8oKum0QdjsXOaHI1a8pvWxMM5lMyhb7KQ+bGSTnnB6I6WXjVvwU+vup1qrcKnsl+p5DRqdVAvDH2KfyeRH4ZqL7ypJaUXt37oRw1aZv9Km+ymPqV2k+zm/ixfwJKTHXEX2RmfdVqG4sDSqJYpIpGzy6fZTS1JG6p3cRq0pMP0OKVUBi92pcyvGuChStgl3aBTpyVtTJhxi9Ef05IkoQrVBi1pVf6IblrRUk1XFFpO6rTsywOjJ76YBn61lvMnvpgGoOXr+LmWq9tJige1VOdL76elFxwOh9ux9Qe0DHeHT3V92vtp2cADWl4CLS+AliWkJT0N13Vatlgx2lLLujTln9TyuNvt9nVanrIDDYXo7bR0sz8RXLbNP6llzpWWxNC6SzstOZfZ7j+p5Yqo0XKZ7XbH1l1a9nH6A2+hJXW+6H99Xrp1k6o/qSXG8YeBlq/jZ1r2wzD0bxejPKBlfPH/Sr6fljE97uCPX4A40euAlq8DWr6Ox7SkzGWLfA+0LLmp5UTO1fvPaukkcq5emzt7Cy3pbQYuOZfLRi2nd7W0oiX3IVfnP6ZlcllvQn44OcqUPL8IY8jX5bDGHMWZbkovkuCvKaPVPtXSgagsR1DnRL2RoqX746+lBWcdRVcp/Wzf2pMHr1aHFosy7hSO+7JAKfZlQVKU3ejS/XYW4k5d9e/3szO5x9+rMwwAAAAAoBVx5+152VuKq69Bfksa8nrtiTvdbtde2PTTLjYXdZtXZ9mXhxbdus0796o96/qChrOevABvzwYAAAAAAAAAAAAAAAAAAACgHf8B8UlzZUku7aQAAAAASUVORK5CYII="> </a>
+                        </div>
+                        <div class="topic-block">
+                            <div class="topic-block-body">
+                                <p class="ft_gioithieu">
+                                    Sàn thương mại điện tử The Men - địa chỉ mua sắm trực tuyến uy tín, tin cậy, an toàn, và miễn phí. The Men là lựa chọn hàng đầu khi mua sắm đồ hiệu chính hãng, sang trong
+                                    và đắt tiền tại Việt Nam.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="social">
+                            <div class="title">
+                                <strong>Theo chúng tôi</strong>
+                            </div>
+                            <ul class="networks">
+                                <li class="facebook">
+                                    <a href="https://www.facebook.com/themen.store" target="_blank" rel="noopener noreferrer"><img src="~/Assets/Images/social/Face.png" /></a>
+                                </li>
+                                <li class="twitter">
+                                    <a href="https://www.youtube.com/c/ThemenApple" target="_blank" rel="noopener noreferrer"><img src="~/Assets/Images/social/Youtube.png" /></a>
+                                </li>
+                                <li class="rss">
+                                    <a href="https://zalo.me/3937868610324741136"><img src="~/Assets/Images/social/Zalo.png" /></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-block information">
+                        <div class="title">
+                            <strong>Thông tin</strong>
+                        </div>
+                        <ul class="list">
+                            <li><a href="/tin-tuc">Tin Tức</a></li>
+                            <li><a href="/gioi-thieu">Giới thiệu </a></li>
+                            <li><a href="/check-imei">Check IMEI</a></li>
+                            <li><a href="/phuong-thuc-thanh-toan">Phương thức thanh toán</a></li>
+                            <li><a href="/thue-diem-ban-le">Thuê điểm bán lẻ</a></li>
+                            <li>
+                                <div class="topic-block">
+                                    <div class="topic-block-body">
+                                        <ul><li> <a href="https://themen.com.vn/" target="_blank" rel="noopener">Bảo hành và sửa chữa</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="topic-block">
+                                    <div class="topic-block-body">
+                                        <ul><li><a href="https://themen.com.vn/" target="_blank" rel="noopener">Tuyển dụng</a></li></ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><a href="/web-review">Đánh giá chất lượng, khiếu nại</a></li>
+                            <li><a href="/invoice">Tra cứu hoá đơn điện tử</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-block customer-service">
+                        <div class="title">
+                            <strong>Chính sách</strong>
+                        </div>
+                        <ul class="list">
+                            <li><a href="/thu-cu-doi-moi">Thu cũ đổi mới</a></li>
+                            <li><a href="/chinh-sach-ship-cod">Giao hàng</a></li>
+                            <li><a href="/giao-hang-zalopay">Giao hàng (ZaloPay)</a></li>
+                            <li><a href="/chinh-sach-huy-giao-dich-va-hoan-tien">Huỷ giao dịch </a></li>
+                            <li><a href="/chinh-sach-doi-tra">Đổi trả</a></li>
+                            <li><a href="/chinh-sach-bao-hanh">Bảo hành</a></li>
+                            <li><a href="/dich-vu">Dịch vụ</a></li>
+                            <li><a href="/giai-quyet-khieu-nai">Giải quyết khiếu nại</a></li>
+                            <li><a href="/chinh-sach-bao-mat">Bảo mật thông tin</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-block my-account">
+                        <div class="title"><strong>Địa chỉ &amp; Liên hệ</strong></div>
+                        <ul class="list">
+                            <li><a href="/customer/info">Tài khoản của tôi</a></li>
+                            <li><a href="/order/history">Đơn đặt hàng</a></li>
+                            <li><a href="/find-store">Hệ thống cửa hàng</a></li>
+                            <li>
+                                <div class="topic-block">
+                                    <div class="topic-block-body">
+                                        <ul>
+                                            <li><a href="" target="_blank" rel="noopener">Tìm Store trên Google Map</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="contact-footer">
+                                <div class="topic-block">
+                                    <div class="topic-block-body">
+                                        <ul>
+                                            <li>
+                                                <a href="tel:19006626">Mua hàng: <span style="color:#06c;font-size:16px">1900.6626 </span></a>
+                                                <ul>
+                                                    <li><span style="color:#86868b;padding-left:15px;display:flex;line-height:20px">Nhánh 1: khu vực Hà Nội và các tỉnh phía bắc</span></li>
+                                                    <li><span style="color:#86868b;padding-left:15px;display:flex;line-height:20px">Nhánh 2: khu vực Hồ Chí Minh và các tỉnh phía nam</span></li>
+                                                    <li><span style="color:#86868b;padding-left:15px;display:flex;line-height:20px">Nhánh 3: Khiếu nại và góp ý</span></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="tel:0822688668">Doanh nghiệp: <span style="color:#06c">0822.688.668</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-lower">
+                    <div class="footer-info">
+                        <span class="footer-disclaimer">
+                            © 2016 Công ty Cổ Phần HESMAN Việt Nam GPDKKD: 0107465657 do Sở KH &amp; ĐT TP. Hà Nội cấp ngày 08/06/2016. <br>
+                            Địa chỉ: Số 76 Thái Hà, phường Trung Liệt, quận Đống Đa, thành phố Hà Nội, Việt Nam<br>Đại diện pháp luật: PHẠM MẠNH HÒA | ĐT: 0247.305.9999 | Email: lienhe@themencom
+                        </span>
+                        <a href="http://online.gov.vn/(X(1)S(jfktnnku5rui3vjf5pnk4sgc))/Home/WebDetails/34144?AspxAutoDetectCookieSupport=1">
+                            <img src="/images/uploaded-source/Trang chủ/Bocongthuong.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div><!--/Footer-->
+        </section>
+    </div>
+</body>
+</html>
